@@ -45,6 +45,9 @@ const Navbar = () => {
                 <NavLink to="/settings" className={({ isActive }) => (isActive ? 'active-link' : '')}>
                     <RiSettingsLine className="m-[6px]" size="25px" />
                 </NavLink>
+                <NavLink to="/leaderboard" className={({ isActive }) => (isActive ? 'active-link' : '')}>
+                    <LiaHandshake className="m-[6px]" size="25px" />
+                </NavLink>
             </div>
             {/* <span>{user.email}</span> */}
             <button className='bg-sky-400 rounded-full p-1 text-white' onClick={handleLogout}>   

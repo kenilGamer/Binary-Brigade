@@ -7,6 +7,8 @@ import Profile from './Pages/Profile';
 import Settings from './Pages/Settings';
 import Login from './Pages/login/Login';
 import Signup from './Pages/signup/Signup';
+import BusinessModel from './Pages/BusinessModel';
+import LeaderBoard from './Pages/LeaderBoard';
 
 function Layout() {
     return (
@@ -26,6 +28,7 @@ const App = () => {
                 <Route path="/chat" element={<Chat />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/settings" element={<Settings />} />
+                <Route path="/leaderboard" element={<LeaderBoard />} />
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />

@@ -29,7 +29,7 @@ const home = () => {
             <input className=" p-[0.3rem] px-4 rounded-2xl w-[21vw] mx-3 -mt-2" placeholder="Search Skills..."/>
             <textarea className=" p-2 rounded-2xl w-[21vw] h-[25%] mx-3 mt-4" placeholder="Added skills"/>
             <textarea className=" p-2 rounded-2xl w-[21vw] h-[30%] mx-3 mt-4" placeholder="Desciption"/>
-            <button className="btn h-7 w-[6rem] text-sm text-white ml-auto mr-5 mt-4 rounded-2xl">Post</button>
+            <button className="btn h-7 w-[6rem] text-sm bg-slate-500 text-white ml-auto mr-5 mt-4 rounded-2xl">Post</button>
         </div>
     </div>
   )

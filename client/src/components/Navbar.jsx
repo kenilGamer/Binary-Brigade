@@ -6,19 +6,26 @@ import { IoChatbubbleEllipsesOutline } from 'react-icons/io5';
 import { FaRegUser } from 'react-icons/fa';
 import { RiSettingsLine } from 'react-icons/ri';
 import { NavLink } from 'react-router-dom';
-import { Button } from "@chakra-ui/react"
+import { Button } from "@chakra-ui/react";
 import { auth } from '../Firebase/Firebase';
 import { useDispatch } from 'react-redux';
-import { loginUser, logoutUser } from '../features/userSlice';
+import { logoutUser } from '../features/userSlice';
 import { signOut } from 'firebase/auth';
 
 const Navbar = () => {
-    const dispatch = useDispatch
-    const handLogout = () =>{
-        dispatch(loginUser())
-        signOut(auth)
-        alert('dd')
-    }
+    const dispatch = useDispatch();
+
+    const handleLogout = async () => {
+        try {
+            await signOut(auth);
+            dispatch(logoutUser());
+            alert('You have been logged out.');
+        } catch (error) {
+            console.error('Error signing out:', error);
+            alert('Error signing out. Please try again.');
+        }
+    };
+
     return (
         <div className="accent-bg h-screen w-14 p-2 shadow-[0px_1px_4px_#00000070] flex flex-col items-center justify-between flex-shrink-0">
             <img src="logo.png" alt="SkillSwap" />
@@ -40,7 +47,9 @@ const Navbar = () => {
                 </NavLink>
             </div>
             {/* <span>{user.email}</span> */}
-            <button className='bg-sky-400 rounded-full p-1 text-white' onClick={handLogout}>   <MdOutlineLogout size="30px" className="rotate-180" /></button>
+            <button className='bg-sky-400 rounded-full p-1 text-white' onClick={handleLogout}>   
+                <MdOutlineLogout size="30px" className="rotate-180" />
+            </button>
         </div>
     );
 };

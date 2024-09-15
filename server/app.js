@@ -1,62 +1,68 @@
-const dotenv = require("dotenv").config();
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-const cors = require("cors");
-const expressSession = require("express-session");
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-// const apiRouter = require('./routes/apis'); // Ensure path is correct
-const apiRouter = require('./routes/apis');
-const passport = require('passport');
-const flash = require("connect-flash");
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const User = require('./models/Usermodel'); // Import User model
+require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const port = process.env.PORT || 5000;
 
-app.use(flash());
-app.use(expressSession({
-  resave: false,
-  saveUninitialized: false,
-  secret: "hey hello bro"
-}));
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Enable CORS
+// Middleware
 app.use(cors());
+app.use(express.json());
+// const cors = require('cors');
 
-// Define your routes
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// Allow requests from http://localhost:5173
+app.use(cors({
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true // if you want to allow cookies or authorization headers
+}));
 
-app.use('/api', apiRouter); // Register the /api route prefix
+// MongoDB connection
+mongoose.connect(process.env.MONGO_URI).then(() => {
+  console.log('MongoDB connected');
+}).catch(err => console.log(err));
 
+// Sign-up route
+app.post('/api/signup', async (req, res) => {
+  const { username, email, password } = req.body;
 
-// Catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+  try { 
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
 
-// Error handler
-app.use(function(err, req, res, next) {
-  // Provide error only in development mode
-  res.status(err.status || 500).json({
-    message: err.message,
-    // Only show stacktrace if in development
-    error: req.app.get('env') === 'development' ? err : {}
-  });
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create new user
+    const newUser = new User({
+      username,
+      email,
+      password: hashedPassword,
+    });
+
+    // Save user to the database
+    await newUser.save();
+
+    // Generate JWT token
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
+      expiresIn: '1h',
+    });
+
+    res.status(201).json({ token, user: newUser });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
 });
 
 // Start the server
-const port = 5001;
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
-
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
 module.exports = app;

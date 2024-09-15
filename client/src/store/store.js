@@ -1,11 +1,12 @@
-import {   configureStore } from "@reduxjs/toolkit";
-import user from "../slice/userSlice";
-import matches from "../slice/matchSlice";
-import { rootReducers } from "./reducers";
+import { configureStore } from "@reduxjs/toolkit";
+import userReducer from "../slice/userSlice";
+import matchesReducer from "../slice/matchSlice";
+import { rootReducer } from "./reducers"; // Ensure this file exists and exports rootReducer
 
 export const store = configureStore({
-    reducer:{
-        data: rootReducers,
-        user:user,
-        matches:matches,
-    }})
+    reducer: {
+        data: rootReducer, // Ensure rootReducer is correctly combined
+        user: userReducer,
+        matches: matchesReducer,
+    }
+});

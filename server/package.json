@@ -6,7 +6,11 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.1.1",
+    "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.3",
     "connect-flash": "^0.1.1",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
@@ -15,11 +19,14 @@
     "ejs": "~2.6.1",
     "express": "~4.16.1",
     "express-session": "^1.17.3",
+    "helmet": "^7.1.0",
     "http-errors": "~1.6.3",
-    "mongoose": "^8.0.3",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.6.2",
     "morgan": "~1.9.1",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
-    "passport-mongoose": "^0.0.1"
+    "passport-mongoose": "^0.0.1",
+    "react-icons": "^5.3.0"
   }
 }

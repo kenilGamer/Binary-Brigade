@@ -2,7 +2,7 @@ import React from 'react'
 
 function BusinessModel() {
     return (
-        <div className='bg-white h-screen w-full flex justify-center items-center'>
+        <div className=' h-screen w-full flex justify-center items-center'>
             <div className='flex gap-10 p-2 rounded-lg'>
                 <div className="card p-4 rounded-2xl">
                     <p className="title">Standard</p>
